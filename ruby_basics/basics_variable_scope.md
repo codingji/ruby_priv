@@ -199,3 +199,17 @@ puts a
 
 ```
 
+Line 11 call to `puts` will output `7` and return `nil`.
+
+The return value of the `my_value` method call on line 10 will return .
+
+This is due to the concept of variable scope with respect to method invocations. When a method is called, a new isolated scope is created. Variables initialized outside the method are not accessible inside the method unless a reference to them is passed in as an argument. Since the reference held by local variable `a` on line 1 is not directly or indirectly passed into the method, any changes to a method local variable `a` will not be seen in the outer scope. Since `a` is inaccessible to the method, when ruby attempts to evaluate line 6, it will raise a 
+~~NameError. `a += b` is ruby syntactical sugar for `a = a + b`. In order to evaluate the expression `a + b` we must have a value for `a`. Since `a` has not been initialized within the scope of the method
+and the `a` outside the method is inaccessible due to scoping rules, ruby has no choice but to raise the exception.~~
+
+**NoMethodError**. This is due to the fact that code is parsed prior to being run. When ruby parses the code, it allocates space in memory for variables that appear before an assignment operator `=`. Line 6 appears to initalize variable `a`, but at this time, ruby simply points `a` to the `nil` object.
+
+When evaluating line 6 after `my_method` invocation, ruby essentially attempts to evaluate `nil.+(1)` Since the `Integer#+` method cannot be called on `nil` class, we see the NoMethodError raised.
+
+If line 6 had read `a + 1` instead, ruby would raise a NameError instead. It is the `Kernel#=` method that creates the association between `nil` and `a` during the parsing process.
+

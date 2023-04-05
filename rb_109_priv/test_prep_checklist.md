@@ -15,9 +15,14 @@
   
     > [ ] https://fine-ocean-68c.notion.site/Assorted-Questions-from-RB101-130-mostly-101-9d1a8d729c8842548baa850db15cadd8
 
+  - [ ] My terminology checklist
+
   - [ ] RB109 Written Assessment Terminology PDF
 
     > [ ] https://drive.google.com/file/d/16Q32xXRoJ0wFMwiA8CojhdqfwCgE9rjj/view
 
-  
+  - [ ] Review [useful_methods.md](useful_methods.md)
+
+  - [ ] Precendence Table
+
 
