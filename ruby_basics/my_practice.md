@@ -99,3 +99,39 @@ p advice
 
 `p statement.count('t')`
 
+## What do the following expressions evaluate to? aka What value does each expression return?
+
+```ruby
+# 1. x = 2
+2
+# 2. puts x = 2
+nil
+# 3. p name = "Joe"
+"Joe"
+# 4. four = "four"
+"four"
+# 5. print something = "nothing"
+nil
+
+```
+
+
+def rolling_buffer1(buffer, max_buffer_size, new_element)
+  buffer << new_element
+  buffer.shift if buffer.size > max_buffer_size
+  buffer
+end
+
+def rolling_buffer2(input_array, max_buffer_size, new_element)
+  buffer = input_array + [new_element]
+  buffer.shift if buffer.size > max_buffer_size
+  buffer
+end
+
+Yes, the difference here is that `<<` is a mutating method and will mutate the buffer.
+
+`+` is a non-mutating method and so on `line 8` when input_array is added to new_element, we are assigning buffer to a new object, rather than the existing object. In this way, the pointer being returned from the method will return a new object, not the original object passed to it. 
+
+In other words, `buffer` output on the final line of `rolling_buffer2` will be a different object than `input_array`. 
+In `rolling_buffer1` however, the `buffer` input as an argument will be the same `buffer` output at the end of the method.
+
