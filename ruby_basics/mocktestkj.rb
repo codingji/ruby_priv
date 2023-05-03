@@ -43,14 +43,14 @@
 # ====================
 # 2a---
 
-# def fix(value)
-#   value.upcase!
-#   value.concat('!')
-#   value
-# end
+def fix(value)
+  value.upcase!
+  value.concat('!')
+  value
+end
 
-# s = 'hello'
-# t = fix(s)
+s = 'hello'
+t = fix(s)
 
 # Both pointing to same object?
 # Be mutated as well (could imply
@@ -69,11 +69,11 @@
 
 # #2c---
 
-# def fix(value)
-#   value << 'xyz'
-#   value = value.upcase
-#   value.concat('!')
-# end
+def fix(value)
+  value << 'xyz'
+  value = value.upcase
+  value.concat('!')
+end
 
 # s = 'hello'
 # t = fix(s)
@@ -82,8 +82,8 @@
 # #2d---
 
 # def fix(value)
-#   value = value.upcase!
-#   value.concat('!')
+  value = value.upcase!
+  value.concat('!')
 # end
 
 # s = 'hello'
@@ -113,9 +113,9 @@
 # =====================
 # 5a---
 # return exits the program
-# def meal
-#   return 'Breakfast'
-# end
+def meal
+  return 'Breakfast'
+end
 
 # puts meal
 
@@ -130,8 +130,8 @@
 # #5c ---
 
 # def meal
-#   return 'Breakfast'
-#   'Dinner'
+  return 'Breakfast'
+  'Dinner'
 # end
 
 # puts meal
@@ -139,8 +139,8 @@
 # #5d ---
 
 # def meal
-#   puts 'Dinner'
-#   return 'Breakfast'
+  puts 'Dinner'
+  return 'Breakfast'
 # end
 
 # puts meal
@@ -157,9 +157,9 @@
 # #5e ---
 
 # def meal
-#   return 'Breakfast'
-#   'Dinner'
-#   puts 'Dinner'
+  return 'Breakfast'
+  'Dinner'
+  puts 'Dinner'
 # end
 
 # puts meal
