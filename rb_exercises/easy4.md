@@ -1,3 +1,18 @@
+
+# 1 Short Long Short
+
+```ruby
+
+def short_long_short(str1, str2)
+  (str1.length > str2.length) ? (str2 + str1 + str2) : (str1 + str2 + str1)
+end
+
+short_long_short('abc', 'defgh') == "abcdefghabc"
+short_long_short('abcde', 'fgh') == "fghabcdefgh"
+short_long_short('', 'xyz') == "xyz"
+
+```
+
 # What Century is That?
 ```ruby
 def century(year)
