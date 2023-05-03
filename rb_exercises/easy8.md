@@ -19,12 +19,51 @@ Probs:
 
 ```ruby
 
-def sum_of_sums(array)
-  for index in array
-    p array[0..integer]
-  end
 
+def sum_of_sums(array)
+  array.map.with_index do |int, index|
+    array[0..index].sum
+  end.sum
 
 end
+
+def sum_of_sums(numbers)
+  cumulative_sum = 0 # running_total
+  snapshot_sum = 0 # sum from adding each value within the 
+
+  numbers.each do |current_number| 
+    # `num` is the value (not the index) so 3, 5 and 2
+
+    snapshot_sum += current_number
+    # for every value, accumulator = accumulator + current value (`num`)
+    
+
+    cumulative_sum += snapshot_sum
+
+  end
+
+  cumulative_sum
+end
+
+1. 
+  accum: 0 + 3 => 3
+  sum_t: 0 + 3 => 3
+2.
+  accum: 3 + 5 => 8
+  sum_t:3 + 8 => 11
+3.
+  accum: 8 + 2 => 10
+  sum_t:11 + 10 => 21
+
+So `accumulator` is keeping track of the running total of adding each subsequent `number` one at a time. That 'snapshot sum' is noted by the `sum_total` variable who is adding those individual sums together to create a cumulative total of each 'snapshot sum'.
+
+In the test cases, the accumulator is basically doing whats within the parenthesis and then those parenthetical sums are being added to the total sum upon each iteration.
+
+p sum_of_sums([3, 5, 2]) #== (3) + (3 + 5) + (3 + 5 + 2) # -> (21)
+p sum_of_sums([1, 5, 7, 3]) #== (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) # -> (36)
+p sum_of_sums([4]) #== 4
+p sum_of_sums([1, 2, 3, 4, 5]) #== 35
+
+```
 
 ```
