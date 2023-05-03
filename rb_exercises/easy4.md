@@ -85,22 +85,106 @@ p leap_year?(100) == false
 p leap_year?(400) == true
 
 ```
+# Palindromic Substrs
+```ruby
+def palindrome?(string)
+  string.length > 0 &&
+  string.chars == string.chars.reverse
+end
 
+# p palindrome?('cat')
+# p palindrome?('dopapod')
+# p palindrome?('tat')
+# p palindrome?('t')
+# p palindrome?('')
 
-# Multiples of 3 and 5
+def palindrome_substrings(strinput)
+  palindromic_substrings = []
 
-input: integer
-output: integer repr. sum of multiples of 3 and 5 from 1..input_int
+  strinput.chars.each_with_index do |letter, index|
+    sub_string = strinput.chars[index..strinput.length - 1]
+    # Create substrings of substring and determine if its a palindrome
+    while sub_string.length > 1
+      palindromic_substrings << sub_string.join if palindrome?(sub_string.join)
+      sub_string.pop
+    end
+  end
+  p palindromic_substrings
+end
 
-probs:
-1. find multiples of 3
-2. find multiples of 5
-3. sum the output from 1 and 2
-4. return sum
+palindrome_substrings("abcddcbA")
+```
 
+# Mult 3 & 5
+input: integer greater than 1
+output: integer rep. sum of multiples of 3 and 5 between 1 and the input. (1..input)
+
+problems to solve:
+1. find all multiples of 3 and 5 in the range created
+2. sum the list of multiples/factors
+3. return sum
 
 ```ruby
+def find_multis(max, int)
+  running_total = 0
+  iteration = 1
+  multis = []
+
+  loop do
+    running_total += int
+    break if running_total > max
+    multis << (iteration * int)
+    iteration += 1
+  end
+  multis
+end
+
+def multisum(integer)
+  find_multis(integer, 3).union(find_multis(integer, 5)).sum
+end
 
 
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+p multisum(1000) == 234168
 
 ```
+
+# Running Total
+input: array of ints
+output: array of ints with cumulative sum of values
+
+?s: new array object or same array object returned?
+
+req: 
+- empty input array returns empty array
+- single element array returns same array (not necessarily same object)
+
+
+problems:
+1. sum while iterating (inject? uses memo, operation/block)
+  - `object.inject { |running_total, current_val| sum + n }`
+2. map or push values to a new array
+
+```ruby
+def running_total(array)
+  arr = []
+  if array.empty?
+    return arr
+  else
+    arr << array.inject do |sum, val|
+             arr << sum
+             sum + val
+           end
+  end
+  arr
+end
+
+p running_total([2, 5, 13]) #== [2, 7, 20]
+p running_total([14, 11, 7, 15, 20]) #== [14, 25, 32, 47, 67]
+p running_total([3]) #== [3]
+p running_total([]) #== []
+
+```
+
