@@ -16,7 +16,6 @@ Probs:
 2. sum them all (either at the end or on a rolling basis)
   - map the sum onto the original array and then take the sum of the new array
   - get the sum on each iteration and add it to a variable outside the iterator
-
 ```ruby
 
 
