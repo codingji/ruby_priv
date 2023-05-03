@@ -85,3 +85,22 @@ p leap_year?(100) == false
 p leap_year?(400) == true
 
 ```
+
+
+# Multiples of 3 and 5
+
+input: integer
+output: integer repr. sum of multiples of 3 and 5 from 1..input_int
+
+probs:
+1. find multiples of 3
+2. find multiples of 5
+3. sum the output from 1 and 2
+4. return sum
+
+
+```ruby
+
+
+
+```
