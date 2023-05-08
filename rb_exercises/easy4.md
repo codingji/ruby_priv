@@ -1,3 +1,10 @@
+# Further Explorations to do:
+-[ ] 3 (Leap 1) -Write Leap Years in Reverse?
+-[ ] 5 (Mult of 3 & 5) -Rewrite using `Enumerable#inject/reduce`
+-[ ] 7 (String to Integer) -Convert Hexadecimal String to Integer
+-[ ] 7 (String to Integer) -refactor to reduce repetitive code sections
+-[ ] 9 (Integer to String) -Find mutating and non-mutating methods that don't use `!` to distinguish their mutatative quality
+-[ ] 10 (Integer to String) -refactor LS answer
 
 # 1 Short Long Short
 
@@ -188,3 +195,160 @@ p running_total([]) #== []
 
 ```
 
+# 7 - Convert a String to a Number!
+
+input: string
+output: integer
+
+req:
+- cant use `String#to_i` or `Integer()`
+
+- all valid numeric characters
+- no plus or minus signs
+
+- calculate the result by analyzing the characters in the string
+   - (comparing the string version of the integer with the integer)
+
+thoughts:
+
+map and compare digit by digit (then i only have to check 10 different 'integers' instead of something like counting and comparing and needing to move thru 4321 iterations before finding the answer)
+
+Problem:
+
+- how to compare the string to the integer
+  - (0.to_s == char)
+
+- iterate thru each character from input string and compare it to a string version of an integers 0..9 until one is true
+  - when true push that integer to a new array
+- multiply the indices of each digit by the appropriate 'place' (tens, hundreds, thousands, etc)
+- take the sum of all the above unique multiplication operations
+- return that sum
+
+```ruby
+def string_to_integer(strinteger)
+  int_array = []
+
+  strinteger.each_char do |char|
+    [*0..9].each do |num|
+      if num.to_s == char
+        int_array << num
+      end
+    end
+  end
+  final_int = int_array.reverse.map.with_index do |integer, index|
+                integer * (10 ** (index))
+              end
+
+  final_int.sum
+  # For #9 just replace above line with this line:
+  # strinteger.start_with?('-') ? -final_int.sum : final_int.sum
+
+end
+
+
+p string_to_integer('4321') == 4321
+p string_to_integer('570') == 570
+p string_to_integer('3489271287') == 3489271287
+```
+
+# 8 Convert a String to a Signed Number
+
+Reuse old method but add in a conditional in which the first char of the string object is looked at and then proceed accordingly
+- if the string doesn't begin with '-'
+  - proceed as usual
+- if it does
+  - take the negative at the very end of the problem
+
+just add:
+`strinteger.start_with?('-') ? -final_int.sum : final_int.sum`
+- since the `each_char` block is only pushing digits to the new array object, leading non-integer characters are already ignored.
+- all i have to do is check to see if the first character was a negative sign and then take the negative of the final sum
+
+# 9 Convert a Number to a String
+
+P: Convert an integer input into its string representation without using the `to_s`, `String()`, or `Kernel#format` methods.
+
+Input = string
+Output = integer
+
+Problems =
+-how to convert an integer to a string
+  - Hash to 'translate' string to integer
+-repeat this process for all values
+  - break string into array of characters
+  - use hash to convert each string to integer and now have an array of integer objects
+-how to calculate total value?
+  - multiply each index by appropriate power of 10
+
+```ruby
+def integer_to_string(integer)
+  int_to_string = {
+    0 => '0',
+    1 => '1',
+    2 => '2',
+    3 => '3',
+    4 => '4',
+    5 => '5',
+    6 => '6',
+    7 => '7',
+    8 => '8',
+    9 => '9'
+  }
+
+  integer.digits.reverse.map do |number|
+    int_to_string[number]
+  end.join
+
+end
+
+```
+
+# 10 Convert a Signed Number to a String!
+
+
+```ruby
+def integer_to_string(integer)
+
+  if integer == 0
+    return '0'
+  end
+
+  int_to_string = {
+    0 => '0',
+    1 => '1',
+    2 => '2',
+    3 => '3',
+    4 => '4',
+    5 => '5',
+    6 => '6',
+    7 => '7',
+    8 => '8',
+    9 => '9'
+  }
+
+  string_num = integer.abs.digits.reverse.map do |number|
+                 int_to_string[number]
+               end.join
+
+  integer < 0 ? string_num.prepend('-') : string_num.prepend('+')
+
+end
+
+p integer_to_string(4321) == '+4321'
+p integer_to_string(0) == '0'
+p integer_to_string(-5000) == '-5000'
+```
+
+## FUrther EXplaorataon
+Refactor to reduce 3 method calls to one.
+- need to do
+
+```ruby
+def signed_integer_to_string(number)
+  case number <=> 0
+  when -1 then "-#{integer_to_string(-number)}"
+  when +1 then "+#{integer_to_string(number)}"
+  else         integer_to_string(number)
+  end
+end
+```

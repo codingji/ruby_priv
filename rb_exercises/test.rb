@@ -1,17 +1,19 @@
-def running_total(array)
-  arr = []
-  if array.empty?
-    return arr
-  else
-    arr << array.inject do |sum, val|
-             arr << sum
-             sum + val
-           end
-  end
-  arr
-end
+require 'pry'
 
-p running_total([2, 5, 13]) #== [2, 7, 20]
-p running_total([14, 11, 7, 15, 20]) #== [14, 25, 32, 47, 67]
-p running_total([3]) #== [3]
-p running_total([]) #== []
+numbers = [1, 2, 3, 4]
+
+# p(
+# numbers.each do |number|
+#   p number
+#   numbers.shift(1)
+# end
+# )
+
+
+p(
+  numbers.each do |number|
+    binding.pry
+    p number
+    numbers.pop(1)
+  end
+)
