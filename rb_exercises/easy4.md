@@ -1,7 +1,8 @@
 # Further Explorations to do:
--[ ] 3 (Leap 1) -Write Leap Years in Reverse?
--[ ] 5 (Mult of 3 & 5) -Rewrite using `Enumerable#inject/reduce`
--[ ] 7 (String to Integer) -Convert Hexadecimal String to Integer
+-[✓] 3 (Leap 1) -Write Leap Years in Reverse?
+-[✓] 5 (Mult of 3 & 5) -Rewrite using `Enumerable#inject/reduce`
+-[✓] 6 (Running Totals) -Rewrite using `#each_with_object` and `inject`
+-[✓] 7 (String to Integer) -Convert Hexadecimal String to Integer
 -[ ] 7 (String to Integer) -refactor to reduce repetitive code sections
 -[ ] 9 (Integer to String) -Find mutating and non-mutating methods that don't use `!` to distinguish their mutatative quality
 -[ ] 10 (Integer to String) -refactor LS answer
@@ -20,7 +21,7 @@ short_long_short('', 'xyz') == "xyz"
 
 ```
 
-# What Century is That?
+# 2 What Century is That?
 ```ruby
 def century(year)
   # When doing this division, we make it a float to preserve any remainder. If a remainder exists `ceil` will round it up to the next whole integer.
@@ -62,7 +63,7 @@ p century(1127) == '12th'
 p century(11201) == '113th'
 ```
 
-# Easy 4 - 3 Leap Years (Part 1)
+# 3 Leap Years (Part 1)
 
 ```ruby
 # Takes a positive integer as a year (gregorian) and outputs whether or not its a leap year. (boolean)
@@ -92,37 +93,69 @@ p leap_year?(100) == false
 p leap_year?(400) == true
 
 ```
-# Palindromic Substrs
+# 4 Leap Years (Part 2)
+Add a clause that will handle years prior to 1752. During this time a leap year is simply every 4th year (including 1752).
+
+Ans:
+I will reuse my code from before and just add an if clause to handle years including and prior to 1752.
+
+if 
+
 ```ruby
-def palindrome?(string)
-  string.length > 0 &&
-  string.chars == string.chars.reverse
+def leap_year?(year)
+  if year <= 1752
+    return true if year % 4 == 0
+  else
+    # if divisible by 4 then leap year true
+      # unless also divisible by 100 false
+        # unless also divisible by 400 true
+    return true if year % 400 == 0
+    return true if year % 4 == 0 unless year % 100 == 0
+  end
+  false
 end
 
-# p palindrome?('cat')
-# p palindrome?('dopapod')
-# p palindrome?('tat')
-# p palindrome?('t')
-# p palindrome?('')
+leap_year?(2016) == true
+leap_year?(2015) == false
+leap_year?(2100) == false
+leap_year?(2400) == true
+leap_year?(240000) == true
+leap_year?(240001) == false
+leap_year?(2000) == true
+leap_year?(1900) == false
+leap_year?(1752) == true
+leap_year?(1700) == true
+leap_year?(1) == false
+leap_year?(100) == true
+leap_year?(400) == true
+```
+  ## Further Exploration:
+  Can you write the code in this order? And is it simpler or more complex than original solution.
 
-def palindrome_substrings(strinput)
-  palindromic_substrings = []
+  if year % 4 == 0
+  if year % 100 == 0
+  if year % 400 == 0
 
-  strinput.chars.each_with_index do |letter, index|
-    sub_string = strinput.chars[index..strinput.length - 1]
-    # Create substrings of substring and determine if its a palindrome
-    while sub_string.length > 1
-      palindromic_substrings << sub_string.join if palindrome?(sub_string.join)
-      sub_string.pop
+  Algos:
+  - Use flags? Do the math and if yes/no change a flag and then check the flag combo (an array) at the end. [y, n, n] == true || [y, y, n] == false || etc.
+  - Simple Branching Statements (will be more complex because sections repeated).
+  ```ruby
+  def leap_year?(year)
+  if year % 4 == 0
+    if year % 100 == 0 && year % 400 == 0
+      return true
+    elsif year % 100 == 0
+      return false
+    else
+      return true
     end
   end
-  p palindromic_substrings
-end
+  false
+  end
 
-palindrome_substrings("abcddcbA")
-```
+  ```
 
-# Mult 3 & 5
+# 5 Mult 3 & 5
 input: integer greater than 1
 output: integer rep. sum of multiples of 3 and 5 between 1 and the input. (1..input)
 
@@ -158,7 +191,45 @@ p multisum(1000) == 234168
 
 ```
 
-# Running Total
+## Further Exploration
+Investigate Enumerable.inject (also known as Enumerable.reduce), How might this method be useful in solving this problem? (Note that Enumerable methods are available when working with Arrays.) Try writing such a solution. Which is clearer? Which is more succinct?
+
+This method (`Enumerable#inject` / `Enumerable#reduce`) might be useful in order to perform a repeated operation on each element in the array object.
+
+By using `Array#sum`, I basically did the equivalent of `array.inject(:+).
+If I had needed to get the product, quotient or difference from all the numbers (anything besides the sum) I couldn't use `Array#sum` so this is where `reduce` or `inject` really shines because they are so versatile.
+
+```ruby
+# Helper Methods:
+def mult_of_3?(num)
+  num % 3 == 0
+end
+
+def mult_of_5?(num)
+  num % 5 == 0
+end
+
+# Main Method:
+def multisum(max_val)
+  # Find all multiples of 3 or 5 in a number and then sum all those factors.
+  multiples = []
+  1.upto(max_val) do |number|
+    if mult_of_3?(number) || mult_of_5?(number)
+      multiples << number
+    end
+  end
+  multiples.inject(:+)
+end
+
+p multisum(3) == 3
+p multisum(5) == 8
+p multisum(10) == 33
+p multisum(1000) == 234168
+
+```
+I think in both cases the use of `inject`/`reduce` is going to be both more succint and also clearer in the even we are finding something besides the sum.
+
+# 6 Running Totals
 input: array of ints
 output: array of ints with cumulative sum of values
 
@@ -192,6 +263,29 @@ p running_total([2, 5, 13]) #== [2, 7, 20]
 p running_total([14, 11, 7, 15, 20]) #== [14, 25, 32, 47, 67]
 p running_total([3]) #== [3]
 p running_total([]) #== []
+
+```
+## 6 Further Exploration
+Try solving this problem using Enumerable#each_with_object or Enumerable#inject (note that Enumerable methods can be applied to Arrays).
+
+```ruby
+def running_total(array)
+  # Try solving using `Enumerable#each_with_object` and/or `Enumerable#inject`
+  array.each_with_object([]) do |number, running_sum|
+    if running_sum.empty?
+      new_total = number
+    else
+      new_total = [running_sum.last, number].inject(:+)
+    end
+    running_sum << new_total
+  end
+  
+end
+
+p running_total([2, 5, 13]) == [2, 7, 20]
+p running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
+p running_total([3]) == [3]
+p running_total([]) == []
 
 ```
 
@@ -250,6 +344,43 @@ p string_to_integer('4321') == 4321
 p string_to_integer('570') == 570
 p string_to_integer('3489271287') == 3489271287
 ```
+## 7 Further Exploration
+Write a hexadecimal_to_integer method that converts a string representing a hexadecimal number to its integer value.
+
+```ruby
+def hexadecimal_to_integer(hex_num)
+  hex_chart = {
+    "0" => 0,
+    "1" => 1,
+    "2" => 2,
+    "3" => 3,
+    "4" => 4,
+    "5" => 5,
+    "6" => 6,
+    "7" => 7,
+    "8" => 8,
+    "9" => 9,
+    "A" => 10,
+    "B" => 11,
+    "C" => 12,
+    "D" => 13,
+    "E" => 14,
+    "F" => 15
+  }
+
+  # Each 'place' is [10**3, 10**2, 10**1, 10**0] in base 10 system.
+  # In hexadecimal  [16**3, 16**2, 16**1, 16**0] in base 16 system.
+
+  # Convert each integer to its base 10 equivalent integer, then multiply by the appropriate power of 16.
+
+  converted_digits = hex_num.reverse.chars.map.with_index do |char, index|
+                       hex_chart[char.upcase] * (16 ** index)
+                     end.sum
+
+end
+
+p hexadecimal_to_integer('4D9f') == 19871
+```
 
 # 8 Convert a String to a Signed Number
 
@@ -263,6 +394,59 @@ just add:
 `strinteger.start_with?('-') ? -final_int.sum : final_int.sum`
 - since the `each_char` block is only pushing digits to the new array object, leading non-integer characters are already ignored.
 - all i have to do is check to see if the first character was a negative sign and then take the negative of the final sum
+
+```ruby
+def string_to_signed_integer(num)
+  num_chart = {
+    "0" => 0,
+    "1" => 1,
+    "2" => 2,
+    "3" => 3,
+    "4" => 4,
+    "5" => 5,
+    "6" => 6,
+    "7" => 7,
+    "8" => 8,
+    "9" => 9,
+  }
+
+  # Each 'place' is [10**3, 10**2, 10**1, 10**0] in base 10 system.
+
+  # Convert each string object to its integer equivalent, then multiply by the appropriate power of 10 for the index.
+  num_arr = []
+
+  num.reverse.chars.each_with_index do |char, index|
+    if [*'0'..'9'].include?(char)
+      num_arr << num_chart[char] * (10 ** index)
+    end
+  end
+  
+  num.chars.first == '-' ? -num_arr.sum : num_arr.sum
+
+end
+
+
+p string_to_signed_integer('4321') == 4321
+p string_to_signed_integer('-570') == -570
+p string_to_signed_integer('+100') == 100
+
+```
+
+## 8 Further Exploration
+In our solution, we call string[1..-1] twice, and call string_to_integer three times. This is somewhat repetitive. Refactor our solution so it only makes these two calls once each.
+
+```ruby
+def string_to_signed_integer(string)
+  case string[0]
+  when '-' then -string_to_integer(string[1..-1])
+  when '+' then string_to_integer(string[1..-1])
+  else          string_to_integer(string)
+  end
+end
+
+# Refactored Code:
+
+```
 
 # 9 Convert a Number to a String
 
@@ -339,7 +523,7 @@ p integer_to_string(0) == '0'
 p integer_to_string(-5000) == '-5000'
 ```
 
-## FUrther EXplaorataon
+## Further Exploration
 Refactor to reduce 3 method calls to one.
 - need to do
 

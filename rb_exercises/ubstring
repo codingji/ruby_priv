@@ -1,0 +1,20 @@
+
+[1mFrom:[0m /home/codingji/LS/ruby/ruby_priv/rb_exercises/test.rb:35 Object#longest:
+
+    [1;34m31[0m: [32mdef[0m [1;34mlongest[0m(string)
+    [1;34m32[0m:   substrings = substrings(string)
+    [1;34m33[0m: 
+    [1;34m34[0m:   substrings.select! [32mdo[0m |substring|
+ => [1;34m35[0m:     binding.pry
+    [1;34m36[0m:     substring.chars == substring.chars.sort
+    [1;34m37[0m:   [32mend[0m
+    [1;34m38[0m:   p substrings
+    [1;34m39[0m:   longest = substrings.map(&[33m:length[0m).max
+    [1;34m40[0m: 
+    [1;34m41[0m:   substrings.select! [32mdo[0m |substring|
+    [1;34m42[0m:     substring.length == longest
+    [1;34m43[0m:   [32mend[0m
+    [1;34m44[0m:   
+    [1;34m45[0m:   p substrings[1;34m#.first[0m
+    [1;34m46[0m: [32mend[0m
+
